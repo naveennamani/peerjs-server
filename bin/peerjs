@@ -92,7 +92,13 @@ if (opts.sslkey || opts.sslcert) {
 }
 
 const userPath = opts.path;
-const server = PeerServer(opts, server => {
+const customGenerationFunction = () =>
+  (Math.random().toString(36) + "0000000000000000000").substr(2, 10);
+
+const server = PeerServer({
+    ...opts,
+    generateClientId: customGenerationFunction
+}, server => {
   const host = server.address().address;
   const port = server.address().port;
 
